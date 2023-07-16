@@ -11,7 +11,7 @@
 /public/bundles/
 /var/
 /vendor/
-/migrations/
+/migrations
 !/migrations/.gitignore
 
 ###< symfony/framework-bundle ###
