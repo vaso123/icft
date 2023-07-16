@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "d35ad253-b232-4db9-b9a5-3cd41b932e51",
+		"name": "ICF",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4717689"
+	},
+	"item": [
+		{
+			"name": "Unauthorized Request",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/id/129884",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"id",
+						"129884"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token for User 1 [can buy]",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"user1@email.com\",\"password\":\"password\"}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/login_check",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"login_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token for User 2 [can not buy]",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"user2@email.com\",\"password\":\"password\"}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/login_check",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"login_check"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single Artwork Succes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/id/129884",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"id",
+						"129884"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Single Artwork Non Exists",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2ODc4OTI3MzYsImV4cCI6MTY4Nzg5NDUzNiwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImVtYWlsIjoidXNlcjFAZW1haWwuY29tIn0.NuitvS_O8F_sQ4uZaHa_Fo87eNvT2xFcIEPJQONZKxsiOUbf2CMFDsKOHXooL5nsux5I60IfajpqWt0c46aTFrUOKi0DHMLTNz70mC7RvaHAxVhPdzz51Em1D5mL8Y3ZgSqagF4_1rgSCXZkp-RqAU_6yP7p91aWmwUwNehyRTZxJGiOChoqwIZR8gBtUZYP-3jNBPYYTEQIFZNDLLAt7jXY-bR-6KmDtXIjdRdSupOzKJDPh5NgAUnBK3VTRfpWuxi3sxeUwRDFH0P6JxkHk-38NQ3OCiJR6NNWzxE5nmVnsAKzxxKuJqvebes3cdXodn1kRBI24_5gq6tx8_2WMw",
+						"description": "Paste the token after Bearer with a prefix: space",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/id/12",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"id",
+						"12"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Artwork Pagination Success",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/pagination/page/20/size/10",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"pagination",
+						"page",
+						"20",
+						"size",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchace Artwork",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\": \"129884\"}"
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/purchace/",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"purchace",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchace Artwork Malformed Body",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Bad request"
+				},
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/purchace/",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"purchace",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Purchases Malformed Email",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/purchace/get/malformedemail",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"purchace",
+						"get",
+						"malformedemail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Purchases User can not buy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/purchace/get/user2@email.com",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"purchace",
+						"get",
+						"user2@email.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Purchases User Success",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{hostname}}/api/artworks/purchace/get/user1@email.com",
+					"protocol": "http",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"artworks",
+						"purchace",
+						"get",
+						"user1@email.com"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2ODgyMjQxMzMsImV4cCI6MTY4ODIyNTkzMywiZW1haWwiOiJ1c2VyMUBlbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0JVWSJdLCJwYXNzd29yZCI6InBhc3N3b3JkIn0.jPHUfjeNWxUx1vDp8d7YMpwiPu4Gq620-3JEv69X3r0K12mIh_R2JUQESWDJQXqK5VOBk9P6Q46xxhbqu5DKVT0FSQycXd96hN_Kbk0wSs3mjcN5EnDBft6J0lVUL-J013RhpdN5QVTF8YvYf7q5e7ifE4b4vFaVYl3tdEkOdDvSkb0NIAIeSjxky3KkW1VgWDalDBeh3hkhQT71aG5saqDLWuMAtfw31-VpFphZUxhvAKe9A_cafBufLzR_sHB8HpNy8imOZldjxorZDEgEE8xNbG3gR-qjfTfUSavqEBDrASSmbzdNBaoqjNSR99nIQCDQ_BcFOiKLoVYpnZ32Jw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "hostname",
+			"value": "localhost",
+			"type": "string"
+		}
+	]
+}

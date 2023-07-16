@@ -1,0 +1,35 @@
+openapi: 3.0.0
+info:
+  title: 'IFC Tech Hungary - Backend Trial Task'
+  description: 'This API connect to the Chicago Art API, and stores users purchases locally.'
+  contact:
+    email: vasoczki.ferenc@gmail.com
+  version: 1.0.1beta
+paths:
+  '/api/artworks/id/{id}':
+    get:
+      tags:
+        - Artworks
+      summary: 'Get artwork by ID'
+      operationId: getArtworkById
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of the artwork'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                properties:
+                  id: { type: integer }
+                  name: { type: string }
+                  artist: { type: string }
+                type: object
+        '404':
+          description: 'Artwork not found'

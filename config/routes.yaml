@@ -1,0 +1,12 @@
+index:
+  path: /
+  controller:
+
+api_login_check:
+  path: /api/login_check
+
+swagger_ui:
+  path: /api/doc/
+  controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+  defaults:
+    template: '@App/swagger-ui/index.html'

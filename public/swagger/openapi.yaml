@@ -1,0 +1,204 @@
+openapi: 3.0.0
+info:
+  title: 'IFC Tech Hungary - Backend Trial Task'
+  description: 'This API connect to the Chicago Art API, and stores users purchases locally.'
+  contact:
+    email: vasoczki.ferenc@gmail.com
+  version: 1.0.1beta
+paths:
+  '/api/artworks/id/{id}':
+    get:
+      tags:
+        - Artworks
+      summary: 'Get artwork by ID'
+      description: 'Get details about an artwork by the given Chicago API artwork ID.'
+      operationId: getArtworkById
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'ID of the artwork'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'Successful operation'
+          content:
+            application/json:
+              schema:
+                properties:
+                  ID: { type: integer }
+                  title: { type: string }
+                  author: { type: string }
+                  thumbnail: { properties: { lqip: { type: string }, width: { type: integer }, height: { type: integer }, alt_text: { type: string } }, type: object, nullable: true }
+                type: object
+        '401':
+          description: 'Invalid or Expired JWT Token'
+          content:
+            application/json:
+              schema:
+                properties:
+                  code: { type: integer, example: 401 }
+                  message: { type: string, example: 'Expired JWT Token' }
+                type: object
+        '404':
+          description: 'The item you requested cannot be found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  status: { type: integer, example: 404 }
+                  message: { type: string, example: 'The item you requested cannot be found.' }
+                type: object
+  '/api/artworks/pagination/page/{page}/size/{limit}':
+    get:
+      tags:
+        - Artworks
+      summary: 'Get paginated artworks'
+      description: 'Get details of artworks starts at [page] with limit [size].'
+      operationId: getPaginatedArtworks
+      parameters:
+        -
+          name: page
+          in: path
+          description: 'Page number'
+          required: true
+          schema:
+            type: integer
+        -
+          name: limit
+          in: path
+          description: 'Number of items per page'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Successful response.In real life there will be as many elements\n     *                          as you go for the size parameter. "
+          content:
+            application/json:
+              schema:
+                properties:
+                  pagination: { properties: { total: { type: integer, example: 119795 }, limit: { type: integer, example: 2 }, offset: { type: integer, example: 38 }, total_pages: { type: integer, example: 59898 }, current_page: { type: integer, example: 20 }, prev_url: { type: string, example: 'https://api.artic.edu/api/v1/artworks?page=19&limit=2&fields=id%2Ctitle%2Cartist_title%2Cthumbnail' }, next_url: { type: string, example: 'https://api.artic.edu/api/v1/artworks?page=21&limit=2&fields=id%2Ctitle%2Cartist_title%2Cthumbnail' } }, type: object }
+                  data: { type: array, items: { properties: { ID: { type: integer, example: 57050 }, title: { type: string, example: 'The Landing Place' }, author: { type: string, example: 'Hubert Robert' }, thumbnail: { properties: { lqip: { type: string, example: 'data:image/gif;base64,R0lGODlhBA...' }, width: { type: integer, example: 9000 }, height: { type: integer, example: 10340 }, alt_text: { type: string, example: 'A work made of oil on canvas.' } }, type: object, nullable: true } }, type: object } }
+                type: object
+        '401':
+          description: 'Invalid or Expired JWT Token'
+          content:
+            application/json:
+              schema:
+                properties:
+                  code: { type: integer, example: 401 }
+                  message: { type: string, example: 'Expired JWT Token' }
+                type: object
+  /api/artworks/purchace/:
+    post:
+      tags:
+        - Artworks
+      summary: 'Purchase artwork by ID'
+      description: 'Purchace an Artwork by the given Chicago Api Artwork ID'
+      operationId: purchaseArtworkById
+      requestBody:
+        description: 'JSON payload for artwork purchase'
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                id:
+                  type: integer
+              type: object
+      responses:
+        '200':
+          description: 'Artwork purchased successfully'
+          content:
+            application/json:
+              schema:
+                properties:
+                  user: { type: string }
+                  artworkId: { type: integer }
+                type: object
+        '401':
+          description: 'Invalid or Expired JWT Token.'
+          content:
+            application/json:
+              schema:
+                properties:
+                  code: { type: integer, example: 401 }
+                  message: { type: string, example: 'Expired JWT Token' }
+                type: object
+        '400':
+          description: 'Item has sold, user have no right to buy or the POST body is malformed.'
+          content:
+            application/json:
+              schema:
+                properties:
+                  code: { type: integer, example: 401 }
+                  message: { type: string, example: 'Expired JWT Token' }
+                type: object
+        '404':
+          description: 'Item not found'
+          content:
+            application/json:
+              schema:
+                properties:
+                  code: { type: integer, example: 400 }
+                  message: { type: string, example: 'The item you requested cannot be found.' }
+                type: object
+  '/api/artworks/purchace/get/{userEmail}':
+    get:
+      tags:
+        - Artworks
+      summary: 'Get purchases by user email'
+      description: 'List purchases by a user by the ID of user.'
+      operationId: getPurchasesByUserEmail
+      parameters:
+        -
+          name: userEmail
+          in: path
+          description: 'User''s email'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'Successful response'
+          content:
+            application/json:
+              schema:
+                properties:
+                  user: { properties: { id: { type: integer }, email: { type: string } }, type: object }
+                  purchases: { type: array, items: { properties: { itemId: { type: integer }, title: { type: string }, author: { type: string }, thumbnail: { properties: { lqip: { type: string }, width: { type: integer }, height: { type: integer }, alt_text: { type: string } }, type: object } }, type: object } }
+                type: object
+        '400':
+          description: 'User not found by email, user has no buy permission'
+          content:
+            application/json:
+              schema:
+                properties:
+                  code: { type: integer, example: 400 }
+                  message: { type: string, example: 'This user has no buy permission: user2@email.com' }
+                type: object
+        '404':
+          description: 'User or purchases not found'
+        '401':
+          description: 'Invalid or Expired JWT Token'
+          content:
+            application/json:
+              schema:
+                properties:
+                  code: { type: integer, example: 401 }
+                  message: { type: string, example: 'Expired JWT Token' }
+                type: object
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 'JWT Authorization header using the Bearer scheme'
+      name: Authorization
+      in: header
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

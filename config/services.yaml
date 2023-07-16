@@ -1,0 +1,50 @@
+# This file is the entry point to configure your own ArtwokApiServiceservices.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    chicagoart_api_url: '%env(string:CHICAGOART_API_URL)%'
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    Symfony\Component\Serializer\Encoder\JsonDecode:
+    Symfony\Component\Serializer\Encoder\JsonEncoder:
+    Symfony\Component\HttpClient\CurlHttpClient:
+        public: true
+        autowire: true
+
+    App\Service\Url\UrlService:
+        arguments:
+            $chicagoApiUrl: '%chicagoart_api_url%'
+
+    App\Factory\PurchaceFactory:
+        arguments:
+            $jsonEncoder: '@Symfony\Component\Serializer\Encoder\JsonEncoder'
+
+    App\Service\ChicagoArtApi\ChicagoArtApiClientService:
+        arguments:
+            $curlHttpClient: '@Symfony\Component\HttpClient\CurlHttpClient'
+
+when@test:
+    parameters:
+        base_url: '%env(string:BASE_URL)%'
+    services:
+        App\Tests\TestUserService:
+            public: true
+            autowire: true
